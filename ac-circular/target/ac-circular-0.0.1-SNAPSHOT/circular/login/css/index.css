@@ -1,0 +1,214 @@
+@CHARSET "UTF-8";
+@import url(../../../common/css/icon/iconfont.css); 
+.logo {
+    height: 44px;
+    line-height: 44px;
+    margin-right: 10px;
+    float: left;
+   }
+header{
+	background-color: black;
+	color: white;
+}
+.dropDown:focus, .dropDown-menu:focus {
+    outline: 0;
+}
+.navbar-userbar {
+    color: #fff;
+}
+/* 菜单 */
+.aside {
+   /*  position: absolute;
+    z-index: 99;
+    overflow: auto;
+     border-right: 1px solid #e5e5e5; */
+    position: absolute;
+    top: 45px;
+    z-index: 99;
+    overflow: auto;
+    border-right: 1px solid #e5e5e5;
+    bottom: 0;
+    background-color: rgba(238,238,238,0.98);
+}
+
+ .menu_dropdown dt {
+    display: block;
+    line-height: 35px;
+    padding-left: 15px;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 1px solid #e5e5e5;
+    font-weight: normal;
+}
+.menu_dropdown dt:hover {
+    color: #148cf1;
+}
+.menu_dropdown dt.selected .menu_dropdown-arrow {
+    transform: rotate(180deg);
+}
+ .menu_dropdown dt .menu_dropdown-arrow {
+    color: #b6b7b8;
+}
+.menu_dropdown dt .menu_dropdown-arrow {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right: 15px;
+    transition-duration: 0.3s;
+    transition-property: all;
+}
+/*左侧菜单*/
+.menu_dropdown dl{ margin-bottom:0}
+.menu_dropdown dt{display:block;line-height:35px;padding-left:15px;cursor:pointer;position:relative;border-bottom: 1px solid #e5e5e5;font-weight:normal}
+.menu_dropdown dt .menu_dropdown-arrow{ position:absolute;overflow: hidden; top:0; right:15px;transition-duration:0.3s ;transition-property:all}
+.menu_dropdown dd{ display:none}
+.menu_dropdown dt.selected .menu_dropdown-arrow{transform: rotate(180deg)}
+.menu_dropdown dd.selected{display:block; margin-left:0px}
+.menu_dropdown ul{padding:0px}
+.menu_dropdown li{line-height:35px;overflow:hidden;zoom:1}
+.menu_dropdown li a{padding-left:15px; display:block;font-weight: bold; margin:0}
+.menu_dropdown li a i{ font-weight: normal}
+.menu_dropdown dd ul{padding:3px 8px}
+.menu_dropdown dd li{line-height:32px}
+.menu_dropdown dd li a{line-height:32px;padding-left:26px; border-bottom:none; font-weight:normal}
+.menu_dropdown li a:hover{text-decoration:none}
+.menu_dropdown li.current a,.menu_dropdown li.current a:hover{background-color:rgba(255,255,255,0.2)}
+.iconfont {
+    font-family: "Hui-iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    /* -webkit-text-stroke-width: 0.2px; */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 页签  */
+.acrossTab {
+    position: absolute;
+    height: 26px;
+    line-height: 26px;
+    background: none;
+    float: left;
+    top: 8px;
+    left: 0;
+    padding-top: 0;
+}
+.tabNav {
+    height: 35px;
+    padding-right: 75px;
+    overflow: hidden;
+    position: relative;
+    background-color: #efeef0;
+    background-repeat: repeat-x;
+    background-position: 0 -175px;
+}
+/*签头背景样式*/
+.tabNav, .acrossTab li, .acrossTab li em {
+    background-image: url(../../../common/css/images/acrossTab/acrossTab-2.png);
+}
+/* 签头 样式  */
+.acrossTab li {
+    position: relative;
+    padding: 0 30px;
+    cursor: pointer;
+    height: 26px;
+    line-height: 26px;  /*  让内容垂直居中  */
+    display: inline-block;  /*  将li设置成内联元素就可以了  */
+}
+.acrossTab li em {
+    position: absolute;
+    width: 23px;
+    height: 29px;
+    right: -16px;
+    top: 0;
+    z-index: 50;
+    background-position: right -30px;
+  }
+.acrossTab li i {
+    position: absolute;
+    display: block;
+    width: 13px;
+    height: 13px;
+    top: 50%;
+    margin-top: -6px;
+    right: 5px;
+    font-size: 0;
+    line-height: 0;
+    cursor: pointer;
+    background-image: url(../../../common/css/images/acrossTab/acrossTab-close.png);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+ .acrossTab li i:hover {
+    background-position: 0 bottom;
+}
+  
+  /* 选中样式  */
+ .acrossTab li.active {
+    background-position: 0 -120px;
+    z-index: 99;
+}
+.tabNav-wp {
+    position: relative;
+    height: 35px;
+    overflow: hidden;
+}
+.acrossTab li.active em {
+    background-position: right -150px;
+}
+.article-box {
+    overflow: hidden;
+    z-index: 1;
+    background-color: #fff;
+    padding-left: 0;
+    padding-right: 0;
+}
+.framePage{
+ 	padding-left: 0;
+    padding-right: 0;
+}
+iframe{
+	width:100%;
+	height: 100%;
+}
+table{
+	width:100%;
+	/* max-height:100%;
+	margin-left: 10px;
+	margin-right: 10px; */
+}
+.form-control{
+	width:210px!important;
+	display: inline!important;
+}
+form>div>label
+{
+	width: 100px;
+}
+/* form
+{
+	margin-top: 30px;
+} */
+.en {
+    font-family: Arial!important;
+}
+.breadcrumb span {
+    padding: 0 5px;
+}
+.breadcrumb {
+    border-bottom: 1px solid #e5e5e5;
+    line-height: 39px;
+    height: 39px;
+    overflow: hidden;
+    padding: 0 15px;
+    background-color: #f5f5f5;
+}
+.circular-btn
+{
+	/* margin-right: 10px; */
+	text-align: right;
+}
+.circular-form
+{
+/* 	margin-top: 70px; */
+}
+

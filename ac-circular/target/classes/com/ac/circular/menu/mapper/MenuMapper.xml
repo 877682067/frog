@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ac.circular.menu.mapper.MenuMapper" >
+  <resultMap id="menu" type="com.ac.circular.menu.entity.Menu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="parent" property="parent" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, url, parent, sort, creator, createTime
+  </sql>
+
+ <select id="queryByUser" resultMap="menu" parameterType="java.lang.Long" >
+	SELECT  
+		<include refid="Base_Column_List" />  
+	FROM sys_menu 
+	<!-- WHERE id IN (
+		SELECT 
+			menu_id  
+		FROM sys_menu_role a,sys_user_role b 
+		WHERE a.role_id  = b.roleid 
+		<if test="id != null" >
+			AND b.UserID  =  #{id,jdbcType=INTEGER}
+	    </if>
+	    <if test="parent == null" >
+			and parent  is null
+		</if>
+	    <if test="parent != null" >
+			and parent = #{parent,jdbcType=INTEGER}
+		</if>
+	)  -->order by sort asc
+  </select>
+  
+  <select id="selectById" resultMap="menu" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="pageList" resultMap="menu" parameterType="com.ac.common.paging.PageResult" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu
+    where 1=1
+    <if test="params.parent!= null and params.parent!='' " >
+		and parent =#{params.parent,jdbcType=INTEGER}
+	</if>
+	<!-- <foreach collection="params" index="key"  item="val" separator="and">
+     	<if test="#{key}!= null and #{key}!='' " >
+     		#{key}=#{val}
+     	</if>
+     </foreach> -->
+  </select>
+   <select id="list" resultMap="menu" parameterType="menu" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu     order by sort asc
+  </select>
+   <select id="getMenuByRoleId" resultMap="menu" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from 
+    	sys_menu a join  sys_menu_role b
+     where a.id =b.menu_id 
+        and b.role_id = #{roleId}
+  </select>
+  <select id="getNextSort" resultType="Integer" parameterType="menu">
+  	SELECT IFNULL(MAX(sort),0)+1   from sys_menu where  parent = #{parent,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="menu" >
+    insert into sys_menu (name, url, 
+      parent, sort, creator, 
+      createTime)
+    values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{parent,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="menu" >
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="parent != null" >
+        parent,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="menu" >
+    update sys_menu
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        parent = #{parent,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="update" parameterType="menu" >
+    update sys_menu
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

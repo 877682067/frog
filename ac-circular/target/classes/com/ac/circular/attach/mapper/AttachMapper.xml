@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ac.circular.attach.mapper.AttachMapper">
+  <resultMap id="attach" type="com.ac.circular.attach.entity.Attach">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+  </resultMap>
+  <resultMap id="attachMapping" type="com.ac.circular.attach.entity.AttachMapping">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="attachId" jdbcType="INTEGER" property="attach_Id" />
+  </resultMap>
+  
+  <sql id="attachColumn">
+    id, name, createTime, creator, path
+  </sql>
+  
+  <select id="selectByBelongId" parameterType="java.lang.Long" resultMap="attach">
+    select 
+    <include refid="attachColumn" />
+    from sys_attach
+    where belong_id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getAttachByMapping" parameterType="attachMapping" resultMap="attach">
+    select 
+      a.id, a.name, a.createTime, a.creator, a.path
+    from sys_attach a 
+    	left join  attachMapping b  on a.id = b.attach_id
+    where b.id= #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectById" parameterType="java.lang.Long" resultMap="attach">
+    select 
+    <include refid="attachColumn" />
+    from sys_attach
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from sys_attach
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteMapping" parameterType="java.lang.Long">
+    delete from attachmapping
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertMapping" parameterType="java.util.List">
+    insert into attachmapping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,type,attach_id
+    </trim>
+    <trim prefix="values">
+    <foreach collection="list" item="item" separator=",">
+		(
+		#{item.id,jdbcType=INTEGER},
+        #{item.type,jdbcType=INTEGER},
+        #{item.attachId,jdbcType=INTEGER}
+        )  
+    </foreach>
+    </trim>
+  </insert>
+  
+  <insert id="insert" parameterType="attach">
+    insert into sys_attach
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        name,
+        createTime,
+        creator,
+        path
+    </trim>
+    <trim prefix="values (" suffix=")">
+		#{name,jdbcType=VARCHAR},
+        #{createtime,jdbcType=TIMESTAMP},
+        #{creator,jdbcType=INTEGER},
+        #{path,jdbcType=VARCHAR}  
+    </trim>
+    <selectKey keyProperty="id" resultType="java.lang.Long">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+  </insert>
+</mapper>

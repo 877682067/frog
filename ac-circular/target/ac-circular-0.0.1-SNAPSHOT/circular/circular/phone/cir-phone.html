@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" >
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/index.css">
+    <title></title>
+    <script src="../../../common/js/jquery-1.11.3.min.js"></script>
+    <script src="js/jQuery.cirPage.js"></script>
+    <script>
+    var business,promotion;
+        (function(){
+            /*取设备宽度*/
+            var changeRem = function () {
+                document.documentElement.style['font-size'] = document.documentElement.clientWidth / 10 + 'px';
+            };
+            changeRem();
+            var t;
+            window.addEventListener('resize' , function(){
+                clearTimeout(t);
+                t = setTimeout(changeRem, 300);
+            }, false);
+            window.addEventListener('pageshow' , function(e){
+                if (e.persisted) {
+                    clearTimeout(t);
+                    t = setTimeout(changeRem, 300);
+                }
+            }, false);
+        }())
+        $(function(){
+            $(".con_box_div td a").on("click",function(){
+                $(".bomb_box").show();
+                $('body').css("overflowY","hidden");
+                $('.bomb_box').css("overflowY","scroll");
+            });
+            $(".close_btn").on("click",function(){
+                $(".bomb_box").hide();
+                $('.bomb_box').css("overflowY","hidden");
+                $('body').css("overflowY","scroll");
+            });
+            $(".btn_qf li").on("click",function(){
+                $(this).parent().find("li").removeClass("active");
+                $(this).addClass("active");
+                $(".con_box_div").hide();
+                $(".con_box_div").eq($(this).index()).show();
+            });
+            $(".Promotion_box input[type='text']").on("input",function(){
+                if($(this).val() == '')
+                {
+                    $(".Promotion_box table tbody tr").show();
+                }
+            });
+            $(".business_box input[type='text']").on("input",function(){
+                if($(this).val() == '')
+                {
+                    $(".Promotion_box table tbody tr").show();
+                }
+            });
+            searchList(".Promotion_box");
+            searchList(".business_box");
+            //根据关键字显示匹配列表
+            function searchList(obj){
+                $(obj).find("input[type='button']").on("click",function(){
+                    var str=$(obj).find("input[type='text']").val();
+                    var tablePage;
+					if($(obj).find("table").attr("id")=='promotion')
+					{
+						tablePage = promotion;
+					}else
+					{
+						tablePage = business;
+					}
+					tablePage.refresh();
+                    /*var reg=new RegExp(str,'ig');
+                     $(obj).find("table tr td:nth-child(2)").each(function(){
+                        if(reg.test($(this).find("a").text()))
+                        {
+                            $(this).parent("tr").show();
+                        }else{
+                            $(this).parent("tr").hide();
+                        }
+                    }) */
+                });
+            }
+            initTable();
+        })
+		function initTable()
+        {
+        	 var  setting = {
+             		url:"/circular/phoneList.action",
+             		columns:[
+             		         {
+             		        	 name:"序号",
+             		        	 field:"id",
+             		        	 format:function(data,index,info)
+             		        	 {
+             		        		 return index+1;
+             		        	 }
+             		         },
+             		         {
+             		        	 name:"标题",
+             		        	 field:"name",
+             		        	 format:function(data,index,info)
+             		        	 {
+             		        		 return '<a href="javascript:;">'+data+'</a>';
+             		        	 },
+             		        	 click:function(data)
+             		        	 {
+             		        		$(".bomb_box").show();
+             		                $('body').css("overflowY","hidden");
+             		                $('.bomb_box').css("overflowY","scroll"); 
+             		                $("#title").html(data.name);
+             		                $("#contentTitle").html(data.name);
+             		                $("#content").html(data.content);
+             		                setCircularInfo(data);
+             		        	 }
+             		         }
+            		         ]
+             }
+             	setting.param = function(){
+	        		return {
+	          			name:$('#promInput').val(),
+	          			type:1
+	          		};
+         		};
+             promotion =  $("#promotion").cirPage(setting);
+             	setting.param = function(){
+	        		return {
+	          			name:$('#businessInput').val(),
+	          			type:2
+	          		}; 
+             	};
+           	 business = $("#business").cirPage(setting);
+        }
+        
+        function setCircularInfo(data)
+        {
+        	$.ajax({
+             	url:getRootPath()+"/circular/getAttach.action",
+             	data:{
+             		id:data.id
+             	},
+             	type:"post",
+             	dataType:"json",
+             	success:function(data)
+             	{
+             		var html=""
+             		for(var i =1;i<data.length;i++)
+           			{
+             			var info = data[i];
+           					html+='<a href="'+getRootPath()+info.path+'">'+info.name+'</a>'
+           			}
+             		if(html)
+           			{
+             			$("#attach").html($("#attach").html()+html);
+           			}
+             		else
+           			{
+             			$("#attach").html("");
+           			}
+             	}
+             });
+        }
+        function getRootPath() {
+   	     var pathName = window.location.pathname.substring(1);
+   	     var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/'));
+   	     if (webName == "") {
+   	         return window.location.protocol + '//' + window.location.host;
+   	     }
+   	     else {
+   	         return window.location.protocol + '//' + window.location.host + '/' + webName;
+   	     }
+   	 } 
+    </script>
+</head>
+<body>
+<section class="con_box">
+    <div class="fid_div"></div>
+    <ul class="btn_qf">
+        <li class="active">促销</li>
+        <li><i></i>业务</li>
+    </ul>
+    <div class="Promotion_box con_box_div">
+        <p><input type="text"  id="promInput" placeholder="请输入关键字"><i></i><input type="button" value="搜索"></p>
+        <table id="promotion">
+           <!--  <thead>
+            <tr>
+                <th width="30%">序号</th>
+                <th width="70%">标题</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td><a href="javascript:;">阿西吧阿西阿西三吧阿西阿西吧阿西阿西吧阿西吧</a></td>
+            </tr>
+            </tbody> -->
+        </table>
+    </div>
+    <div class="business_box con_box_div">
+        <p><input type="text" id="businessInput" placeholder="请输入关键字"><i></i><input type="button" value="搜索"></p>
+        <table id="business">
+          <!--   <thead>
+            <tr>
+                <th width="30%">序号</th>
+                <th width="70%">标题</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>2</td>
+                <td><a href="javascript:;">阿西吧阿西阿西吧阿西阿西吧阿西阿西吧阿西吧</a></td>
+            </tr>
+            </tbody> -->
+        </table>
+    </div>
+</section>
+<div class="bomb_box">
+    <div class="fixedheader"></div>
+    <div class="header">
+        <a href="javascript:;" class="close_btn">&lt;</a>
+        <span id ="title">什么标题呢</span>
+    </div>
+    <ul class="btn_qf">
+        <li class="active">促销</li>
+        <li class="clearfloat"><i></i>业务</li>
+    </ul>
+    <div class="content">
+        <h4 id="contentTitle">关于阿西吧</h4>
+        <p id="content"></p>
+        <div id  = "attach">附件:</div>
+    </div>
+</div>
+</body>
+</html>

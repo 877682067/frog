@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>  
+    	<typeAlias alias="menu" type="com.ac.circular.menu.entity.Menu"/>  
+    	<typeAlias alias="role" type="com.ac.circular.role.entity.Role"/>  
+    	<typeAlias alias="employee" type="com.ac.circular.employee.entity.Employee"/>  
+    	<typeAlias alias="circular" type="com.ac.circular.circular.entity.Circular"/>  
+    	<typeAlias alias="attach" type="com.ac.circular.attach.entity.Attach"/>  
+    	<typeAlias alias="attachMapping" type="com.ac.circular.attach.entity.AttachMapping"/>  
+	</typeAliases>  
+  	<plugins>
+       <plugin interceptor="com.ac.common.paging.intercept.PageIntercept">
+           <property name="databaseType" value="mysql"/>
+       </plugin>
+    </plugins>
+	<mappers>  <!-- 
+         <mapper resource="com/ac/circular/login/mapper/UserMapper.xml"/>  -->  
+         <mapper resource="com/ac/circular/role/mapper/RoleMapper.xml"/> 
+         <mapper resource="com/ac/circular/menu/mapper/MenuMapper.xml"/>  
+         <mapper resource="com/ac/circular/employee/mapper/EmployeeMapper.xml"/>  
+         <mapper resource="com/ac/circular/circular/mapper/CircularMapper.xml"/>  
+         <mapper resource="com/ac/circular/attach/mapper/AttachMapper.xml"/>  
+	</mappers> 
+</configuration>
